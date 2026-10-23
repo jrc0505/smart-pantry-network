@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1f6b4a">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Pantry Network">
+<title>Smart Pantry Network – Orange County</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f7f5ef;--card:#fff;--ink:#1d2a24;--mute:#58655e;--line:#d9d6ca;--brand:#1f6b4a;--brand-ink:#fff;--soft:#e3f1e9;
+--g:#1f7a43;--y:#9a6a00;--o:#b24a12;--r:#9d1c1c;--gb:#dff3e5;--yb:#fbefc9;--ob:#fde0cf;--rb:#f8d9d9;--fs:17px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#111815;--card:#1a2420;--ink:#eef3ef;--mute:#a4b3aa;--line:#33423a;--brand:#5fcf98;--brand-ink:#0b1a12;--soft:#1f3329;--g:#6fe09a;--y:#f0c04a;--o:#ff9a63;--r:#ff8c8c;--gb:#17321f;--yb:#3a2f0e;--ob:#3b2312;--rb:#3b1818}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#111815;--card:#1a2420;--ink:#eef3ef;--mute:#a4b3aa;--line:#33423a;--brand:#5fcf98;--brand-ink:#0b1a12;--soft:#1f3329;--g:#6fe09a;--y:#f0c04a;--o:#ff9a63;--r:#ff8c8c;--gb:#17321f;--yb:#3a2f0e;--ob:#3b2312;--rb:#3b1818}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:var(--fs)/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body.big{--fs:20px}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px 48px}
+header{padding:20px 0 8px}
+h1{font-size:1.6em;margin:0;line-height:1.2}
+.sub{color:var(--mute);margin:4px 0 0}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+button,select,input{font:inherit;color:var(--ink)}
+button,select{min-height:44px;border:2px solid var(--line);background:var(--card);border-radius:12px;padding:6px 14px;cursor:pointer}
+button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.tabs{display:flex;gap:6px;border-bottom:2px solid var(--line);margin:8px 0 16px}
+.tabs button{border:0;border-radius:12px 12px 0 0;background:none;font-weight:600}
+.tabs button[aria-selected=true]{background:var(--brand);color:var(--brand-ink)}
+input[type=search],input[type=email],input[type=password]{width:100%;min-height:50px;border:2px solid var(--line);border-radius:12px;padding:8px 14px;background:var(--card)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chip{border-radius:999px;font-size:.92em}
+.chip[aria-pressed=true]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.lbl{font-size:.85em;font-weight:700;color:var(--mute);margin:14px 0 0;text-transform:uppercase;letter-spacing:.04em}
+.help{background:var(--soft);border-radius:14px;padding:12px 16px;margin:12px 0}
+.help a{color:var(--brand);font-weight:700}
+.card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.card h2{font-size:1.15em;margin:0}
+.meta{color:var(--mute);font-size:.92em;margin:2px 0}
+.badge{display:inline-block;border-radius:8px;padding:2px 9px;font-size:.82em;font-weight:700;margin:2px 4px 2px 0}
+.open{background:var(--gb);color:var(--g)}.closed{background:var(--rb);color:var(--r)}.type{background:var(--soft);color:var(--brand)}
+.stock{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin:12px 0}
+.s{border-radius:10px;padding:8px 10px;font-size:.9em;border:1px solid var(--line)}
+.s b{display:block}
+.segs{display:flex;gap:3px;margin-top:4px}.segs i{flex:1;height:7px;border-radius:4px;background:var(--line)}
+.l3{background:var(--gb)}.l3 .segs i:nth-child(-n+4){background:var(--g)}.l3 b{color:var(--g)}
+.l2{background:var(--gb)}.l2 .segs i:nth-child(-n+3){background:var(--g)}.l2 b{color:var(--g)}
+.l1{background:var(--ob)}.l1 .segs i:nth-child(-n+1){background:var(--o)}.l1 b{color:var(--o)}
+.l0{background:var(--rb)}.l0 b{color:var(--r)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.actions a,.actions button{min-height:44px;display:inline-flex;align-items:center;border-radius:12px;padding:6px 14px;text-decoration:none;font-weight:600;border:2px solid var(--brand);color:var(--brand);background:transparent}
+.actions a.p{background:var(--brand);color:var(--brand-ink)}
+.empty{text-align:center;color:var(--mute);padding:32px 8px}
+.note{font-size:.85em;color:var(--mute);margin-top:24px;border-top:1px solid var(--line);padding-top:12px}
+.stat{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}.stat div{flex:1;min-width:120px;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:10px;text-align:center}.stat strong{display:block;font-size:1.5em;color:var(--brand)}
+.upd{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:6px 0}
+.upd span{flex:1 1 110px;font-weight:600}
+.upd button[aria-pressed=true]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.sr{position:absolute;left:-9999px}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1 id="title"></h1>
+  <p class="sub" id="tag"></p>
+  <div class="bar">
+    <select id="lang" aria-label="Language / Idioma / Ngôn ngữ"><option value="en">English</option><option value="es">Español</option><option value="vi">Tiếng Việt</option></select>
+    <button id="big" aria-pressed="false"></button>
+    <button id="theme" aria-pressed="false"></button>
+  </div>
+</header>
+<div class="help" id="help"></div>
+<div class="tabs" role="tablist" id="tabs"></div>
+<main id="main" aria-live="polite"></main>
+<p class="note" id="note"></p>
+</div>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyD8Zd091h0UNPM6rcyaxwnVWxUAx1o4Yi0",
+  authDomain: "smart-pantry-292a9.firebaseapp.com",
+  projectId: "smart-pantry-292a9",
+  storageBucket: "smart-pantry-292a9.firebasestorage.app",
+  messagingSenderId: "545365261089",
+  appId: "1:545365261089:web:0e2fdaad2168390dfddc60"
+};
+const LV=['l0','l1','l2','l3'];
+const CATS=['produce','protein','dairy','grains','canned','baby','hygiene'];
+const TX={
+en:{title:'Smart Pantry Network',tag:'Find free food in Orange County – see what is in stock before you go.',help:'Need help right now? Call or text <a href="tel:211">211</a> (free, 24/7, many languages).',find:'Find food',saved:'Saved',partner:'For partners',search:'Search by name or city…',type:'Type of place',need:'I need…',diet:'Good to know',all:'All',pantry:'Food pantry',bank:'Food bank',shelter:'Shelter meals',openNow:'Open now',noId:'No ID needed',halal:'Halal',veg:'Vegetarian',gf:'Gluten-free',near:'Sort by distance from me',nearBad:'Location unavailable – showing A–Z.',az:'Sort A–Z',res:'places',none:'No places match. Try removing a filter.',dir:'Directions',save:'Save',unsave:'Saved ✓',hours:'Hours',stock:'Current stock',l0:'Out',l1:'Low',l2:'OK',l3:'Plenty',produce:'Fresh produce',protein:'Protein',dairy:'Dairy & eggs',grains:'Bread & grains',canned:'Canned goods',baby:'Baby items',hygiene:'Hygiene items',op:'Open now',cl:'Closed now',mi:'mi',lang:'Languages',updated:'Updated',nosaved:'Tap “Save” on any place to keep it here.',big:'Larger text',dark:'Dark mode',pTitle:'Partner stock update',pInfo:'Food banks and shelters: tap a level to update what you have. Changes show instantly to neighbors on this device. (In the full version this syncs for everyone.)',pPick:'Choose your location',reset:'Reset demo data',note:'Demo with sample listings and hours – not real inventory. Always confirm with the location before visiting.',stats1:'Places',stats2:'Open now',stats3:'Low or out items',any:'Any'},
+es:{title:'Red de Despensas Inteligente',tag:'Encuentre comida gratis en el Condado de Orange – vea qué hay antes de ir.',help:'¿Necesita ayuda ahora? Llame o envíe texto al <a href="tel:211">211</a> (gratis, 24/7, varios idiomas).',find:'Buscar comida',saved:'Guardados',partner:'Para socios',search:'Buscar por nombre o ciudad…',type:'Tipo de lugar',need:'Necesito…',diet:'Importante',all:'Todos',pantry:'Despensa',bank:'Banco de alimentos',shelter:'Comidas en refugio',openNow:'Abierto ahora',noId:'Sin identificación',halal:'Halal',veg:'Vegetariano',gf:'Sin gluten',near:'Ordenar por cercanía',nearBad:'Ubicación no disponible – orden A–Z.',az:'Ordenar A–Z',res:'lugares',none:'Ningún lugar coincide. Quite un filtro.',dir:'Cómo llegar',save:'Guardar',unsave:'Guardado ✓',hours:'Horario',stock:'Existencias actuales',l0:'Agotado',l1:'Poco',l2:'Bien',l3:'Mucho',produce:'Frutas y verduras',protein:'Proteína',dairy:'Lácteos y huevos',grains:'Pan y granos',canned:'Enlatados',baby:'Artículos para bebé',hygiene:'Higiene',op:'Abierto ahora',cl:'Cerrado ahora',mi:'mi',lang:'Idiomas',updated:'Actualizado',nosaved:'Toque “Guardar” en cualquier lugar para verlo aquí.',big:'Texto grande',dark:'Modo oscuro',pTitle:'Actualizar existencias',pInfo:'Bancos de alimentos y refugios: toque un nivel para actualizar. Los cambios se ven al instante en este dispositivo. (En la versión completa se sincroniza para todos.)',pPick:'Elija su ubicación',reset:'Restablecer datos de demo',note:'Demostración con datos de ejemplo – no es inventario real. Confirme siempre con el lugar antes de ir.',stats1:'Lugares',stats2:'Abiertos',stats3:'Artículos bajos o agotados',any:'Cualquiera'},
+vi:{title:'Mạng Lưới Thực Phẩm Thông Minh',tag:'Tìm thực phẩm miễn phí tại Quận Cam – xem còn hàng không trước khi đi.',help:'Cần giúp ngay? Gọi hoặc nhắn <a href="tel:211">211</a> (miễn phí, 24/7, nhiều ngôn ngữ).',find:'Tìm thực phẩm',saved:'Đã lưu',partner:'Dành cho đối tác',search:'Tìm theo tên hoặc thành phố…',type:'Loại địa điểm',need:'Tôi cần…',diet:'Lưu ý',all:'Tất cả',pantry:'Kho thực phẩm',bank:'Ngân hàng thực phẩm',shelter:'Bữa ăn tại nơi trú ẩn',openNow:'Đang mở',noId:'Không cần giấy tờ',halal:'Halal',veg:'Ăn chay',gf:'Không gluten',near:'Sắp xếp theo khoảng cách',nearBad:'Không có vị trí – xếp A–Z.',az:'Sắp xếp A–Z',res:'địa điểm',none:'Không có kết quả. Hãy bỏ bớt bộ lọc.',dir:'Chỉ đường',save:'Lưu',unsave:'Đã lưu ✓',hours:'Giờ mở cửa',stock:'Hàng hiện có',l0:'Hết',l1:'Ít',l2:'Vừa',l3:'Nhiều',produce:'Rau củ quả',protein:'Đạm',dairy:'Sữa & trứng',grains:'Bánh mì & ngũ cốc',canned:'Đồ hộp',baby:'Đồ em bé',hygiene:'Vệ sinh cá nhân',op:'Đang mở',cl:'Đang đóng',mi:'dặm',lang:'Ngôn ngữ',updated:'Cập nhật',nosaved:'Nhấn “Lưu” ở bất kỳ địa điểm nào để giữ ở đây.',big:'Chữ lớn',dark:'Chế độ tối',pTitle:'Cập nhật hàng tồn',pInfo:'Ngân hàng thực phẩm và nơi trú ẩn: nhấn mức để cập nhật. Thay đổi hiện ngay trên thiết bị này. (Bản đầy đủ sẽ đồng bộ cho mọi người.)',pPick:'Chọn địa điểm của bạn',reset:'Đặt lại dữ liệu mẫu',note:'Bản demo với dữ liệu mẫu – không phải tồn kho thật. Hãy xác nhận với địa điểm trước khi đến.',stats1:'Địa điểm',stats2:'Đang mở',stats3:'Món ít hoặc hết',any:'Bất kỳ'}
+};
+// Real listings, confirmed with each organization. hr = schedule blocks (d: 0=Sun..6=Sat, h: 24h, decimals ok). hr:null = hours not confirmed yet.
+// has = categories they usually have (from what the organization told us). Live stock is NOT tracked.
+const P=[
+{id:1,n:'Laguna Food Pantry',t:'pantry',c:'Laguna Beach',la:33.542,lo:-117.783,a:'20652 Laguna Canyon Rd, Unit B, Laguna Beach, CA 92651',ph:'(949) 497-7121',hr:[{d:[1,2,3,4,5],h:[8,10.5]}],tg:['veg'],lg:'Packets in English and Spanish; also Ukrainian, Vietnamese and Chinese documents. Staff language help varies.',ix:'Photo ID requested. No proof of need required. New shoppers register with the greeter.',nt:'Drive-through: stay in your vehicle. One visit per week.',ty:'Eggs, milk, a protein and other groceries. Vegetarian and no-pork requests accommodated; halal, vegan and gluten-free not guaranteed. Baby items depend on donations.',has:['dairy','protein']},
+{id:2,n:'North Orange Christian Church – The Storehouse',t:'pantry',c:'Orange',la:33.790,lo:-117.838,a:'1001 E Lincoln Ave, Orange, CA',ph:'(714) 998-3181',hr:null,tg:['noId'],lg:'Mostly English. Some Spanish, Mandarin and Vietnamese volunteers (not always on site).',ix:'Nothing required. Please bring your own bags if you can.',nt:'Grocery-store style: you “shop” by need. Numbers are given at the door and about five people enter at a time. Best day: Monday (some items run out by Tuesday). Office: Mon–Fri 9–5.',ty:'Often milk and eggs; sometimes cheese, butter and frozen chicken or beef. Halal not guaranteed.',has:['dairy','protein']},
+{id:3,n:'First Presbyterian Church of Orange Food Pantry',t:'pantry',c:'Orange',la:33.788,lo:-117.853,a:'180 N Grand St, Orange, CA',ph:'(714) 538-2341',hr:[{d:[3],h:[10,12]}],tg:['noId'],lg:'English. Spanish-speaking volunteers available.',ix:'Only self-attesting to need. All are welcome.',nt:'About 8,000 lbs of food given away each week. Variety changes weekly.',ty:'Eggs and meat, fruit, fresh and canned vegetables, cereal, rice, soup, chips and granola.',has:['protein','produce','grains','canned']},
+{id:4,n:'Catholic Charities – Doris Cantlay Food Distribution Center',t:'pantry',c:'Garden Grove',la:33.774,lo:-117.938,a:'12832 Knott St, Garden Grove, CA 92841',ph:'(714) 638-4373',hr:null,tg:['noId'],lg:'English, Spanish, Vietnamese',ix:'No ID or registration. First come, first served.',nt:'No dietary options available.',ty:'',has:[]},
+{id:5,n:'Families Forward Food Pantry',t:'pantry',c:'Irvine',la:33.686,lo:-117.800,a:'',ph:'(949) 552-2727',hr:null,ap:1,tg:['noId','veg'],lg:'English. Spanish with some Community Market staff.',ix:'ID not required, but they may ask for something with your name to book you in.',nt:'Appointment system at the Community Market (choose your own food): one visit per household every 14 days. No appointment? You may get a to-go bag once every 14 days.',ty:'Daily vegetarian items such as produce, canned vegetables and beans. Halal and gluten-free are not consistent.',has:['produce','canned']},
+{id:6,n:'South County Outreach',t:'pantry',c:'Irvine',la:33.684,lo:-117.794,a:'7 Whatney, Suite B, Irvine, CA 92618',ph:'(949) 380-8144',hr:null,tg:[],lg:'English, Spanish, Russian, Farsi, Dari',ix:'Photo ID required. No proof of address.',nt:'Food availability changes often.',ty:'',has:[]},
+{id:7,n:'Friendly Center – Family Resource Center',t:'pantry',c:'Buena Park',la:33.867,lo:-117.998,a:'6688 Beach Blvd, Buena Park, CA 90621',ph:'(714) 771-5300',hr:[{d:[1,3],h:[10.5,19]},{d:[2,4],h:[9,17.5]}],tg:[],lg:'English and Spanish, plus other languages spoken by volunteers.',ix:'Eligibility varies by program.',nt:'Closed daily 1–2 p.m.',ty:'Vegetables and other food and essentials, depending on donations.',has:['produce']},
+{id:8,n:'Friendly Center – Friendly-Mart',t:'pantry',c:'Buena Park',la:33.860,lo:-117.990,a:'7225 El Dorado Dr, Buena Park, CA 90620',ph:'',hr:[{d:[3],h:[10,18.5]},{d:[5],h:[9,17.5]}],tg:[],lg:'English and Spanish, plus other languages spoken by volunteers.',ix:'Eligibility varies by program.',nt:'',ty:'Vegetables and other food and essentials, depending on donations.',has:['produce']},
+{id:9,n:'Pathways of Hope – HUB of Hope Food Pantry',t:'pantry',c:'Fullerton',la:33.860,lo:-117.932,a:'611 S Ford Ave, Fullerton, CA 92832',ph:'(657) 500-8771',hr:[{d:[1,2,3,4],h:[13,17]}],ap:1,bk:'https://www.pohoc.org/appointment-guide/',tg:['noId'],lg:'English. Some volunteers speak Spanish.',ix:'ID not mandatory but highly encouraged. Other services need a photo ID.',nt:'Appointment only – book online. Phone contact: Sal Hernandez.',ty:'Inventory changes daily.',has:[]}
+];
+const TX2={
+en:{tag:'Find free food in Orange County – hours, what to bring and what to expect before you go.',unk:'Call to confirm hours',appt:'By appointment',book:'Book appointment',typ:'What to expect',ids:'ID & sign-up',info:'Details',stats3:'No ID needed',note:'Listings were confirmed with each organization. Food on hand changes daily – call before you go.',upd:'Updated by the pantry',login:'Sign in',logout:'Sign out',email:'Email',pw:'Password',badLogin:'Sign-in failed. Check your email and password.',noLink:'This account is not linked to a pantry yet. Contact the app owner.',noFb:'Partner sign-in is not available in this preview. Open the live site.',pInfo:'Partner sign-in: only approved pantries and food banks can post updates, and each account can edit only its own location. Updates show for 24 hours.',signedIn:'Signed in as',pub:'Publish update',saved2:'Update published ✓',fail:'Could not save. Check your connection and try again.',unset:'Not set'},
+es:{tag:'Encuentre comida gratis en el Condado de Orange – horarios, qué llevar y qué esperar.',unk:'Llame para confirmar horario',appt:'Con cita',book:'Reservar cita',typ:'Qué esperar',ids:'Identificación e inscripción',info:'Detalles',stats3:'Sin identificación',note:'Datos confirmados con cada organización. Los alimentos cambian a diario; llame antes de ir.',upd:'Actualizado por la despensa',login:'Iniciar sesión',logout:'Cerrar sesión',email:'Correo',pw:'Contraseña',badLogin:'No se pudo iniciar sesión. Revise su correo y contraseña.',noLink:'Esta cuenta aún no está vinculada a una despensa.',noFb:'El acceso para socios no está disponible en esta vista previa.',pInfo:'Acceso para socios: solo despensas aprobadas pueden publicar. Cada cuenta edita solo su ubicación. Las actualizaciones se muestran 24 horas.',signedIn:'Sesión de',pub:'Publicar actualización',saved2:'Actualización publicada ✓',fail:'No se pudo guardar. Intente de nuevo.',unset:'Sin definir'},
+vi:{tag:'Tìm thực phẩm miễn phí tại Quận Cam – giờ mở cửa, cần mang gì và thường có gì.',unk:'Gọi để xác nhận giờ',appt:'Cần hẹn trước',book:'Đặt lịch hẹn',typ:'Thường có',ids:'Giấy tờ & đăng ký',info:'Chi tiết',stats3:'Không cần giấy tờ',note:'Thông tin đã được từng tổ chức xác nhận. Thực phẩm thay đổi mỗi ngày; hãy gọi trước khi đến.',upd:'Pantry đã cập nhật',login:'Đăng nhập',logout:'Đăng xuất',email:'Email',pw:'Mật khẩu',badLogin:'Đăng nhập thất bại. Kiểm tra email và mật khẩu.',noLink:'Tài khoản này chưa được liên kết với pantry nào.',noFb:'Đăng nhập đối tác không có trong bản xem trước này.',pInfo:'Đăng nhập đối tác: chỉ pantry được duyệt mới có thể đăng cập nhật, mỗi tài khoản chỉ sửa địa điểm của mình. Cập nhật hiển thị 24 giờ.',signedIn:'Đã đăng nhập:',pub:'Đăng cập nhật',saved2:'Đã đăng cập nhật ✓',fail:'Không lưu được. Hãy thử lại.',unset:'Chưa đặt'}
+};
+let S={lang:'en',tab:'find',q:'',type:'all',need:[],tg:[],sort:'az',pos:null,posErr:false,open:{},saved:[],ov:{},big:false,dark:false,pick:1,live:{},user:null,pid:null,draft:[],msg:''};
+try{const x=JSON.parse(localStorage.getItem('spn')||'{}');Object.assign(S,{lang:x.lang||S.lang,saved:x.saved||[],ov:x.ov||{},big:!!x.big,dark:!!x.dark})}catch(e){}
+const store=()=>{try{localStorage.setItem('spn',JSON.stringify({lang:S.lang,saved:S.saved,ov:S.ov,big:S.big,dark:S.dark}))}catch(e){}};
+const t=k=>(TX2[S.lang]&&TX2[S.lang][k])||TX[S.lang][k]||TX.en[k]||k;
+const stock=p=>S.live[p.id]?S.live[p.id].levels:null;
+const ago=ts=>{const m=Math.max(0,Math.round((Date.now()-ts)/6e4)),r=new Intl.RelativeTimeFormat(S.lang,{numeric:'auto'});return m<60?r.format(-m,'minute'):r.format(-Math.round(m/60),'hour')};
+const isOpen=p=>{if(!p.hr)return false;const n=new Date(),h=n.getHours()+n.getMinutes()/60;return p.hr.some(b=>b.d.includes(n.getDay())&&h>=b.h[0]&&h<b.h[1])};
+const fmtH=h=>new Date(2024,0,1,Math.floor(h),Math.round(h%1*60)).toLocaleTimeString(S.lang,{hour:'numeric',minute:h%1?'2-digit':undefined});
+const day=d=>new Date(2024,0,7+d).toLocaleDateString(S.lang,{weekday:'short'});
+const dist=p=>{if(!S.pos)return null;const R=3959,r=x=>x*Math.PI/180,a=Math.sin(r(p.la-S.pos.la)/2)**2+Math.cos(r(S.pos.la))*Math.cos(r(p.la))*Math.sin(r(p.lo-S.pos.lo)/2)**2;return 2*R*Math.asin(Math.sqrt(a))};
+function hrs(p){if(!p.hr)return t('unk');return p.hr.map(b=>b.d.map(day).join(', ')+' '+fmtH(b.h[0])+'–'+fmtH(b.h[1])).join(' · ')}
+function card(p){
+ const st=stock(p),o=isOpen(p),dd=dist(p),sv=S.saved.includes(p.id),ex=S.open[p.id];
+ const badge=p.hr?`<span class="badge ${o?'open':'closed'}">${o?'● '+t('op'):'○ '+t('cl')}</span>`:`<span class="badge type">☎ ${t('unk')}</span>`;
+ const tel=p.ph?`<a href="tel:${p.ph.replace(/[^0-9+]/g,'')}" style="color:var(--brand);font-weight:700">☎ ${p.ph}</a>`:'';
+ let h=`<article class="card"><div class="top"><div><h2>${p.n}</h2><div class="meta">${p.c}${dd!=null?' · '+dd.toFixed(1)+' '+t('mi'):''}</div></div><div>${badge}</div></div>
+ <div>${S.live[p.id]?`<span class="badge open">✓ ${t('upd')} ${ago(S.live[p.id].ts)}</span>`:''}<span class="badge type">${t(p.t)}</span>${p.ap?`<span class="badge type">${t('appt')}</span>`:''}${p.tg.map(g=>`<span class="badge type">${t(g)}</span>`).join('')}</div>
+ <div class="meta">${t('hours')}: ${hrs(p)}</div><div class="meta">${tel}</div>`;
+ if(ex){h+=`<div class="meta">📍 ${p.a||p.c}</div>${p.ty?`<div class="lbl">${t('typ')}</div><p style="margin:4px 0">${p.ty}</p>`:''}<div class="lbl">${t('ids')}</div><p style="margin:4px 0">${p.ix}</p>${p.nt?`<p class="meta">${p.nt}</p>`:''}<div class="meta">${t('lang')}: ${p.lg}</div>`;
+  if(st)h+=`<div class="lbl">${t('stock')}</div><div class="stock">${CATS.map((c,i)=>st[i]>=0?`<div class="s ${LV[st[i]]}"><span>${t(c)}</span><b>${t(LV[st[i]])}</b><div class="segs"><i></i><i></i><i></i><i></i></div></div>`:'').join('')}</div>`}
+ h+=`<div class="actions" style="margin-top:10px"><button data-a="tog" data-id="${p.id}" aria-expanded="${!!ex}">${ex?'▲':'▼'} ${t('info')}</button><button data-a="sv" data-id="${p.id}" aria-pressed="${sv}">${sv?t('unsave'):t('save')}</button>${p.bk?`<a href="${p.bk}" target="_blank" rel="noopener">${t('book')}</a>`:''}<a class="p" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.a||(p.n+' '+p.c+' CA'))}">${t('dir')}</a></div></article>`;
+ return h}
+function chip(a,v,label,on){return `<button class="chip" data-a="${a}" data-v="${v}" aria-pressed="${on}">${label}</button>`}
+function find(){
+ let L=P.filter(p=>{
+  const q=S.q.trim().toLowerCase();
+  if(q&&!(p.n+' '+p.c).toLowerCase().includes(q))return false;
+  if(S.type!=='all'&&p.t!==S.type)return false;
+  if(S.tg.includes('openNow')&&!isOpen(p))return false;
+  if(!S.tg.filter(g=>g!=='openNow').every(g=>p.tg.includes(g)))return false;
+  const st=stock(p);return S.need.every(c=>st?st[CATS.indexOf(c)]>=2:(p.has||[]).includes(c))});
+ if(S.sort==='near'&&S.pos)L.sort((a,b)=>dist(a)-dist(b));else L.sort((a,b)=>a.n.localeCompare(b.n));
+ const all=P.length,op=P.filter(isOpen).length,lo=P.filter(p=>p.tg.includes('noId')).length;
+ return `<div class="stat"><div><strong>${all}</strong>${t('stats1')}</div><div><strong>${op}</strong>${t('stats2')}</div><div><strong>${lo}</strong>${t('stats3')}</div></div>
+ <label class="sr" for="q">${t('search')}</label><input id="q" type="search" placeholder="${t('search')}" value="${S.q}">
+ <div class="lbl">${t('type')}</div><div class="chips">${chip('type','all',t('all'),S.type==='all')}${['pantry','bank','shelter'].map(k=>chip('type',k,t(k),S.type===k)).join('')}</div>
+ <div class="lbl">${t('need')}</div><div class="chips">${CATS.map(c=>chip('need',c,t(c),S.need.includes(c))).join('')}</div>
+ <div class="lbl">${t('diet')}</div><div class="chips">${['openNow','noId','veg'].map(g=>chip('tg',g,t(g),S.tg.includes(g))).join('')}</div>
+ <div class="chips">${chip('sort','az',t('az'),S.sort==='az')}${chip('sort','near','📍 '+t('near'),S.sort==='near')}</div>
+ ${S.posErr?`<p class="meta">${t('nearBad')}</p>`:''}
+ <p class="lbl" role="status">${L.length} ${t('res')}</p>${L.length?L.map(card).join(''):`<p class="empty">${t('none')}</p>`}`}
+function savedV(){const L=P.filter(p=>S.saved.includes(p.id));return L.length?L.map(card).join(''):`<p class="empty">${t('nosaved')}</p>`}
+function partner(){
+ const H=`<h2>${t('pTitle')}</h2><p>${t('pInfo')}</p>`,M=S.msg?`<p role="status"><b>${S.msg}</b></p>`:'';
+ if(!auth)return H+`<p>${t('noFb')}</p>`;
+ if(!S.user)return H+`<label class="lbl" for="em">${t('email')}</label><input id="em" type="email" autocomplete="username"><label class="lbl" for="pw">${t('pw')}</label><input id="pw" type="password" autocomplete="current-password"><p><button class="chip" data-a="login">${t('login')}</button></p>${M}`;
+ const p=P.find(x=>x.id===S.pid);
+ if(!p)return H+`<p>${t('signedIn')} ${S.user.email}</p>${M}<p><button data-a="logout">${t('logout')}</button></p>`;
+ return H+`<h3>${p.n}</h3><p class="meta">${t('signedIn')} ${S.user.email}</p>`+CATS.map((c,i)=>`<div class="upd"><span>${t(c)}</span>${[0,1,2,3].map(v=>`<button data-a="dset" data-c="${i}" data-v="${v}" aria-pressed="${S.draft[i]===v}">${t(LV[v])}</button>`).join('')}</div>`).join('')+`<p><button class="chip" data-a="pub">${t('pub')}</button> <button data-a="logout">${t('logout')}</button></p>${M}`}
+function render(){
+ document.documentElement.lang=S.lang;document.body.classList.toggle('big',S.big);
+ document.documentElement.dataset.theme=S.dark?'dark':'light';
+ document.title=t('title');
+ for(const [id,k] of [['title','title'],['tag','tag'],['note','note']])document.getElementById(id).textContent=t(k);
+ document.getElementById('help').innerHTML=t('help');
+ const b=document.getElementById('big');b.textContent='A+ '+t('big');b.setAttribute('aria-pressed',S.big);
+ const th=document.getElementById('theme');th.textContent='◐ '+t('dark');th.setAttribute('aria-pressed',S.dark);
+ document.getElementById('lang').value=S.lang;
+ document.getElementById('tabs').innerHTML=[['find',t('find')],['saved',t('saved')+(S.saved.length?' ('+S.saved.length+')':'')],['partner',t('partner')]].map(([k,l])=>`<button role="tab" data-a="tab" data-v="${k}" aria-selected="${S.tab===k}">${l}</button>`).join('');
+ const m=document.getElementById('main'),fq=document.activeElement&&document.activeElement.id==='q';
+ m.innerHTML=S.tab==='find'?find():S.tab==='saved'?savedV():partner();
+ if(fq){const q=document.getElementById('q');q.focus();q.setSelectionRange(q.value.length,q.value.length)}
+}
+document.addEventListener('click',e=>{
+ const el=e.target.closest('[data-a]');if(!el)return;const a=el.dataset.a,v=el.dataset.v,id=+el.dataset.id;
+ if(a==='tab')S.tab=v;
+ else if(a==='type')S.type=v;
+ else if(a==='need'||a==='tg'){const arr=S[a];S[a]=arr.includes(v)?arr.filter(x=>x!==v):[...arr,v]}
+ else if(a==='sort'){if(v==='near'){S.sort='near';S.posErr=false;if(!S.pos){navigator.geolocation?navigator.geolocation.getCurrentPosition(g=>{S.pos={la:g.coords.latitude,lo:g.coords.longitude};render()},()=>{S.sort='az';S.posErr=true;render()},{timeout:8000}):(S.sort='az',S.posErr=true)}}else S.sort='az'}
+ else if(a==='tog')S.open[id]=!S.open[id];
+ else if(a==='sv'){S.saved=S.saved.includes(id)?S.saved.filter(x=>x!==id):[...S.saved,id];store()}
+ else if(a==='dset'){S.draft[+el.dataset.c]=+v;S.msg=''}
+ else if(a==='login'){S.msg='';const e=document.getElementById('em').value.trim(),w=document.getElementById('pw').value;auth.signInWithEmailAndPassword(e,w).catch(()=>{S.msg=t('badLogin');render()})}
+ else if(a==='logout'){auth.signOut()}
+ else if(a==='pub'){db.collection('stock').doc(String(S.pid)).set({levels:S.draft,updatedAt:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>{S.msg=t('saved2');render()}).catch(()=>{S.msg=t('fail');render()})}
+  render()});
+document.addEventListener('input',e=>{if(e.target.id==='q'){S.q=e.target.value;render()}});
+document.addEventListener('change',e=>{if(e.target.id==='pk'){S.pick=+e.target.value;render()}if(e.target.id==='lang'){S.lang=e.target.value;store();render()}});
+document.getElementById('big').onclick=()=>{S.big=!S.big;store();render()};
+document.getElementById('theme').onclick=()=>{S.dark=!S.dark;store();render()};
+if(!localStorage.getItem('spn')&&matchMedia('(prefers-color-scheme:dark)').matches)S.dark=true;
+let auth=null,db=null;
+try{if(window.firebase){firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.firestore();
+ db.collection('stock').onSnapshot(snap=>{const L={};snap.forEach(d=>{const x=d.data(),ts=x.updatedAt&&x.updatedAt.toDate();if(ts&&Date.now()-ts<864e5&&Array.isArray(x.levels))L[+d.id]={levels:x.levels,ts}});S.live=L;
+  const a=document.activeElement;if(!(a&&/INPUT|SELECT/.test(a.tagName)&&a.id!=='q'))render()},()=>{});
+ auth.onAuthStateChanged(u=>{S.user=u;S.pid=null;S.msg='';
+  if(u){db.collection('partners').doc(u.uid).get().then(d=>{if(d.exists){S.pid=+d.data().pantryId;const l=S.live[S.pid];S.draft=l?[...l.levels]:Array(7).fill(-1)}else S.msg=t('noLink');render()}).catch(()=>{S.msg=t('noLink');render()})}else render()})}}catch(e){auth=null;db=null}
+render();
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
