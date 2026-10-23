@@ -116,6 +116,9 @@ en:{tag:'Find free food in Orange County – hours, what to bring and what to ex
 es:{tag:'Encuentre comida gratis en el Condado de Orange – horarios, qué llevar y qué esperar.',unk:'Llame para confirmar horario',appt:'Con cita',book:'Reservar cita',typ:'Qué esperar',ids:'Identificación e inscripción',info:'Detalles',stats3:'Sin identificación',note:'Datos confirmados con cada organización. Los alimentos cambian a diario; llame antes de ir.',upd:'Actualizado por la despensa',login:'Iniciar sesión',logout:'Cerrar sesión',email:'Correo',pw:'Contraseña',badLogin:'No se pudo iniciar sesión. Revise su correo y contraseña.',noLink:'Esta cuenta aún no está vinculada a una despensa.',noFb:'El acceso para socios no está disponible en esta vista previa.',pInfo:'Acceso para socios: solo despensas aprobadas pueden publicar. Cada cuenta edita solo su ubicación. Las actualizaciones se muestran 24 horas.',signedIn:'Sesión de',pub:'Publicar actualización',saved2:'Actualización publicada ✓',fail:'No se pudo guardar. Intente de nuevo.',unset:'Sin definir'},
 vi:{tag:'Tìm thực phẩm miễn phí tại Quận Cam – giờ mở cửa, cần mang gì và thường có gì.',unk:'Gọi để xác nhận giờ',appt:'Cần hẹn trước',book:'Đặt lịch hẹn',typ:'Thường có',ids:'Giấy tờ & đăng ký',info:'Chi tiết',stats3:'Không cần giấy tờ',note:'Thông tin đã được từng tổ chức xác nhận. Thực phẩm thay đổi mỗi ngày; hãy gọi trước khi đến.',upd:'Pantry đã cập nhật',login:'Đăng nhập',logout:'Đăng xuất',email:'Email',pw:'Mật khẩu',badLogin:'Đăng nhập thất bại. Kiểm tra email và mật khẩu.',noLink:'Tài khoản này chưa được liên kết với pantry nào.',noFb:'Đăng nhập đối tác không có trong bản xem trước này.',pInfo:'Đăng nhập đối tác: chỉ pantry được duyệt mới có thể đăng cập nhật, mỗi tài khoản chỉ sửa địa điểm của mình. Cập nhật hiển thị 24 giờ.',signedIn:'Đã đăng nhập:',pub:'Đăng cập nhật',saved2:'Đã đăng cập nhật ✓',fail:'Không lưu được. Hãy thử lại.',unset:'Chưa đặt'}
 };
+Object.assign(TX2.en,{forgot:'Forgot password?',hold:'Hold to show',needEmail:'Type your email above first.',resetSent:'If an account exists for that email, a reset link was sent. Check your spam folder.'});
+Object.assign(TX2.es,{forgot:'¿Olvidó su contraseña?',hold:'Mantenga para ver',needEmail:'Escriba primero su correo arriba.',resetSent:'Si existe una cuenta con ese correo, se envió un enlace. Revise su carpeta de spam.'});
+Object.assign(TX2.vi,{forgot:'Quên mật khẩu?',hold:'Giữ để xem',needEmail:'Hãy nhập email của bạn ở trên trước.',resetSent:'Nếu có tài khoản với email này, liên kết đặt lại đã được gửi. Hãy kiểm tra thư rác.'});
 let S={lang:'en',tab:'find',q:'',type:'all',need:[],tg:[],sort:'az',pos:null,posErr:false,open:{},saved:[],ov:{},big:false,dark:false,pick:1,live:{},user:null,pid:null,draft:[],msg:''};
 try{const x=JSON.parse(localStorage.getItem('spn')||'{}');Object.assign(S,{lang:x.lang||S.lang,saved:x.saved||[],ov:x.ov||{},big:!!x.big,dark:!!x.dark})}catch(e){}
 const store=()=>{try{localStorage.setItem('spn',JSON.stringify({lang:S.lang,saved:S.saved,ov:S.ov,big:S.big,dark:S.dark}))}catch(e){}};
@@ -161,8 +164,7 @@ function savedV(){const L=P.filter(p=>S.saved.includes(p.id));return L.length?L.
 function partner(){
  const H=`<h2>${t('pTitle')}</h2><p>${t('pInfo')}</p>`,M=S.msg?`<p role="status"><b>${S.msg}</b></p>`:'';
  if(!auth)return H+`<p>${t('noFb')}</p>`;
- if(!S.user)return H+`<label class="lbl" for="em">${t('email')}</label><input id="em" type="email" autocomplete="username"><label class="lbl" for="pw">${t('pw')}</label><input id="pw" type="password" autocomplete="current-password"><p><button class="chip" data-a="login">${t('login')}</button></p>${M}`;
- const p=P.find(x=>x.id===S.pid);
+ if(!S.user)return H+`<label class="lbl" for="em">${t('email')}</label><input id="em" type="email" autocomplete="username" value="${(S.em||'').replace(/"/g,'&quot;')}"><label class="lbl" for="pw">${t('pw')}</label><div style="display:flex;gap:8px"><input id="pw" type="password" autocomplete="current-password" style="min-width:0"><button type="button" data-hold="1" oncontextmenu="return false" aria-label="${t('hold')}" style="white-space:nowrap;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none">👁 ${t('hold')}</button></div><p><button class="chip" data-a="login">${t('login')}</button> <button class="chip" data-a="forgot">${t('forgot')}</button></p>${M}`; const p=P.find(x=>x.id===S.pid);
  if(!p)return H+`<p>${t('signedIn')} ${S.user.email}</p>${M}<p><button data-a="logout">${t('logout')}</button></p>`;
  return H+`<h3>${p.n}</h3><p class="meta">${t('signedIn')} ${S.user.email}</p>`+CATS.map((c,i)=>`<div class="upd"><span>${t(c)}</span>${[0,1,2,3].map(v=>`<button data-a="dset" data-c="${i}" data-v="${v}" aria-pressed="${S.draft[i]===v}">${t(LV[v])}</button>`).join('')}</div>`).join('')+`<p><button class="chip" data-a="pub">${t('pub')}</button> <button data-a="logout">${t('logout')}</button></p>${M}`}
 function render(){
@@ -188,8 +190,8 @@ document.addEventListener('click',e=>{
  else if(a==='tog')S.open[id]=!S.open[id];
  else if(a==='sv'){S.saved=S.saved.includes(id)?S.saved.filter(x=>x!==id):[...S.saved,id];store()}
  else if(a==='dset'){S.draft[+el.dataset.c]=+v;S.msg=''}
- else if(a==='login'){S.msg='';const e=document.getElementById('em').value.trim(),w=document.getElementById('pw').value;auth.signInWithEmailAndPassword(e,w).catch(()=>{S.msg=t('badLogin');render()})}
- else if(a==='logout'){auth.signOut()}
+ else if(a==='login'){S.msg='';const e=document.getElementById('em').value.trim(),w=document.getElementById('pw').value;S.em=e;auth.signInWithEmailAndPassword(e,w).catch(()=>{S.msg=t('badLogin');render()})}
+ else if(a==='forgot'){const em=document.getElementById('em').value.trim();S.em=em;if(!em){S.msg=t('needEmail')}else{S.msg='';auth.sendPasswordResetEmail(em).then(()=>{S.msg=t('resetSent');render()}).catch(()=>{S.msg=t('needEmail');render()})}} else if(a==='logout'){auth.signOut()}
  else if(a==='pub'){db.collection('stock').doc(String(S.pid)).set({levels:S.draft,updatedAt:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>{S.msg=t('saved2');render()}).catch(()=>{S.msg=t('fail');render()})}
   render()});
 document.addEventListener('input',e=>{if(e.target.id==='q'){S.q=e.target.value;render()}});
@@ -197,6 +199,12 @@ document.addEventListener('change',e=>{if(e.target.id==='pk'){S.pick=+e.target.v
 document.getElementById('big').onclick=()=>{S.big=!S.big;store();render()};
 document.getElementById('theme').onclick=()=>{S.dark=!S.dark;store();render()};
 if(!localStorage.getItem('spn')&&matchMedia('(prefers-color-scheme:dark)').matches)S.dark=true;
+const pwShow=on=>{const p=document.getElementById('pw');if(p)p.type=on?'text':'password'};
+document.addEventListener('pointerdown',e=>{if(e.target.closest('[data-hold]')){e.preventDefault();pwShow(true)}});
+['pointerup','pointercancel'].forEach(ev=>document.addEventListener(ev,()=>pwShow(false)));
+window.addEventListener('blur',()=>pwShow(false));
+document.addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('[data-hold]')&&(e.key===' '||e.key==='Enter')){e.preventDefault();pwShow(true)}});
+document.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter')pwShow(false)});
 let auth=null,db=null;
 try{if(window.firebase){firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.firestore();
  db.collection('stock').onSnapshot(snap=>{const L={};snap.forEach(d=>{const x=d.data(),ts=x.updatedAt&&x.updatedAt.toDate();if(ts&&Date.now()-ts<864e5&&Array.isArray(x.levels))L[+d.id]={levels:x.levels,ts}});S.live=L;
