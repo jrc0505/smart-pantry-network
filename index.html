@@ -167,7 +167,7 @@ function partner(){
  if(!auth)return H+`<p>${t('noFb')}</p>`;
  if(!S.user)return H+`<label class="lbl" for="em">${t('email')}</label><input id="em" type="email" autocomplete="username" value="${(S.em||'').replace(/"/g,'&quot;')}"><label class="lbl" for="pw">${t('pw')}</label><div style="display:flex;gap:8px"><input id="pw" type="password" autocomplete="current-password" style="min-width:0"><button type="button" data-hold="1" oncontextmenu="return false" aria-label="${t('hold')}" style="white-space:nowrap;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none">👁 ${t('hold')}</button></div><p><button class="chip" data-a="login">${t('login')}</button> <button class="chip" data-a="forgot">${t('forgot')}</button></p>${M}`; const p=P.find(x=>x.id===S.pid);
  if(!p)return H+`<p>${t('signedIn')} ${S.user.email}</p>${M}<p><button data-a="logout">${t('logout')}</button></p>`;
- return H+`<h3>${p.n}</h3><p class="meta">${t('signedIn')} ${S.user.email}</p>`+CATS.map((c,i)=>`<div class="upd"><span>${t(c)}</span>${[0,1,2,3].map(v=>`<button data-a="dset" data-c="${i}" data-v="${v}" aria-pressed="${S.draft[i]===v}">${t(LV[v])}</button>`).join('')}</div>`).join('')+`<p><button class="chip" data-a="pub">${t('pub')}</button> <button data-a="logout">${t('logout')}</button></p>${M}`}
+ return H+`${(S.pids||[]).length>1?`<label class="lbl" for="pp">${t('pPick')}</label><select id="pp">${S.pids.map(i=>`<option value="${i}" ${i===S.pid?'selected':''}>${(P.find(x=>x.id===i)||{}).n||i}</option>`).join('')}</select>`:`<h3>${p.n}</h3>`}<p class="meta">${t('signedIn')} ${S.user.email}</p>`+CATS.map((c,i)=>`<div class="upd"><span>${t(c)}</span>${[0,1,2,3].map(v=>`<button data-a="dset" data-c="${i}" data-v="${v}" aria-pressed="${S.draft[i]===v}">${t(LV[v])}</button>`).join('')}</div>`).join('')+`<p><button class="chip" data-a="pub">${t('pub')}</button> <button data-a="logout">${t('logout')}</button></p>${M}`}
 function render(){
  document.documentElement.lang=S.lang;document.body.classList.toggle('big',S.big);
  document.documentElement.dataset.theme=S.dark?'dark':'light';
@@ -196,7 +196,7 @@ document.addEventListener('click',e=>{
  else if(a==='pub'){db.collection('stock').doc(String(S.pid)).set({levels:S.draft,updatedAt:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>{S.msg=t('saved2');render()}).catch(()=>{S.msg=t('fail');render()})}
   render()});
 document.addEventListener('input',e=>{if(e.target.id==='q'){S.q=e.target.value;render()}});
-document.addEventListener('change',e=>{if(e.target.id==='pk'){S.pick=+e.target.value;render()}if(e.target.id==='lang'){S.lang=e.target.value;store();render()}});
+document.addEventListener('change',e=>{if(e.target.id==='pp'){selPid(+e.target.value);S.msg='';render()}if(e.target.id==='lang'){S.lang=e.target.value;store();render()}});
 document.getElementById('big').onclick=()=>{S.big=!S.big;store();render()};
 document.getElementById('theme').onclick=()=>{S.dark=!S.dark;store();render()};
 if(!localStorage.getItem('spn')&&matchMedia('(prefers-color-scheme:dark)').matches)S.dark=true;
@@ -206,12 +206,13 @@ document.addEventListener('pointerdown',e=>{if(e.target.closest('[data-hold]')){
 window.addEventListener('blur',()=>pwShow(false));
 document.addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('[data-hold]')&&(e.key===' '||e.key==='Enter')){e.preventDefault();pwShow(true)}});
 document.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter')pwShow(false)});
+const selPid=id=>{S.pid=id;const l=S.live[id];S.draft=l?[...l.levels]:Array(7).fill(-1)};
 let auth=null,db=null;
 try{if(window.firebase){firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.firestore();
  db.collection('stock').onSnapshot(snap=>{const L={};snap.forEach(d=>{const x=d.data(),ts=x.updatedAt&&x.updatedAt.toDate();if(ts&&Date.now()-ts<864e5&&Array.isArray(x.levels))L[+d.id]={levels:x.levels,ts}});S.live=L;
   const a=document.activeElement;if(!(a&&/INPUT|SELECT/.test(a.tagName)&&a.id!=='q'))render()},()=>{});
  auth.onAuthStateChanged(u=>{S.user=u;S.pid=null;S.msg='';
-  if(u){db.collection('partners').doc(u.uid).get().then(d=>{if(d.exists){S.pid=+d.data().pantryId;const l=S.live[S.pid];S.draft=l?[...l.levels]:Array(7).fill(-1)}else S.msg=t('noLink');render()}).catch(()=>{S.msg=t('noLink');render()})}else render()})}}catch(e){auth=null;db=null}
+  if(u){db.collection('partners').doc(u.uid).get().then(d=>{if(d.exists){const x=d.data();S.pids=(x.pantryIds||[x.pantryId]).map(Number);selPid(S.pids[0])}else S.msg=t('noLink');render()}).catch(()=>{S.msg=t('noLink');render()})}else render()})}}catch(e){auth=null;db=null}
 render();
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script>
